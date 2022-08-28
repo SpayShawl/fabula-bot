@@ -42,8 +42,9 @@ export class UploadCommand {
 		const storyTitle = interaction.options.getString('titre');
 		const storyAuthors = interaction.options.getString('auteurs');
 		const storyFile = interaction.options.getAttachment('fichier');
+		const fileName = storyFile!.name!.slice(0, -4);
 		const storyDatas = await (await axios.get(storyFile!.url)).data;
-		const storyFileRepo = await getFile(storyFile!.name!);
+		const storyFileRepo = await getFile(`${fileName}.md`);
 
 		if (!storyFileRepo && !storyTitle) {
 			interaction.reply(`:warning: Vous devez donner le titre de l'histoire`);
@@ -60,8 +61,6 @@ export class UploadCommand {
 		interaction.reply(
 			':construction: Publication, patientez quelques instants...'
 		);
-
-		const fileName = storyFile!.name!.slice(0, -4);
 
 		const upload = await putStory(
 			fileName,
