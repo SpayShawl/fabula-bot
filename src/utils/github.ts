@@ -42,9 +42,8 @@ export const putStory = async (
 ) => {
 	try {
 		if (!sha && title && authors) {
-			const parsedName = storyName.substring(0, storyName.length - 3);
 			const parsedAuthors = authors.split(';');
-			await addStoryConfig(parsedName, title, parsedAuthors);
+			await addStoryConfig(storyName, title, parsedAuthors);
 		}
 
 		await upsertStory(storyName, content, sha);
@@ -98,9 +97,9 @@ const upsertStory = async (
 	content: string,
 	sha: string | null
 ) => {
-	const config = getConfig(storyName);
+	const config = getConfig(`${storyName}.md`);
 
-	await getOctokit().request(`PUT ${getConfig(storyName).url}`, {
+	await getOctokit().request(`PUT ${config.url}`, {
 		...config.config,
 		message: `feat: add or update ${storyName}`,
 		committer: {

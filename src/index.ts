@@ -8,6 +8,8 @@ import {
 } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import UploadBuilder, { UploadCommand } from './commands/upload';
+import ListBuilder, { ListCommand } from './commands/list';
+import HelpBuilder, { HelpCommand } from './commands/help';
 
 config();
 
@@ -32,11 +34,15 @@ client.on('interactionCreate', (interaction) => {
 		UploadCommand.execute(
 			interaction as ChatInputCommandInteraction<CacheType>
 		);
+	} else if (ListCommand.isThis(interaction)) {
+		ListCommand.execute(interaction as ChatInputCommandInteraction<CacheType>);
+	} else if (HelpCommand.isThis(interaction)) {
+		HelpCommand.execute(interaction as ChatInputCommandInteraction<CacheType>);
 	}
 });
 
 async function main() {
-	const commands = [UploadBuilder];
+	const commands = [UploadBuilder, ListBuilder, HelpBuilder];
 	try {
 		console.log('Started refreshing application (/) commands.');
 		await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {

@@ -13,7 +13,7 @@ const registerCommand = new SlashCommandBuilder()
 	.addAttachmentOption((option) =>
 		option
 			.setName('fichier')
-			.setDescription('L histoire au format .md')
+			.setDescription('L histoire au format .txt')
 			.setRequired(true)
 	)
 	.addStringOption((option) =>
@@ -61,8 +61,10 @@ export class UploadCommand {
 			':construction: Publication, patientez quelques instants...'
 		);
 
+		const fileName = storyFile!.name!.slice(0, -4);
+
 		const upload = await putStory(
-			storyFile!.name!,
+			fileName,
 			Buffer.from(storyDatas).toString('base64'),
 			storyFileRepo?.data.sha,
 			storyTitle,
