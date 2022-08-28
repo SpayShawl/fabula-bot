@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "main": "index.ts",
   "license": "UNLICENSED",
+  "engines": {
+    "node": "16.13.1"
+  },
   "scripts": {
     "build": "rimraf ./build && tsc",
     "start": "yarn build && node build/index.js",
-    "start:dev": "nodemon"
+    "start:dev": "nodemon",
+    "postinstall": "tsc"
   },
   "dependencies": {
     "@discordjs/builders": "^1.2.0",
